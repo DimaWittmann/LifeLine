@@ -1,9 +1,12 @@
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -16,6 +19,9 @@ public class DisplayArea extends JComponent
 	protected Life engine;
 	protected int cellSize;
 	
+	protected int x=0;
+	protected int y=0;
+	
 	public DisplayArea(Life engine){
 		
 		this.engine = engine;
@@ -24,12 +30,13 @@ public class DisplayArea extends JComponent
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		
 		cellSize =20;
-		
-		
+		this.setDoubleBuffered(true);
+
 	}
 	
 	
 	public void paintComponent(Graphics g){
+		
 		super.paintComponent(g);
 		g.clearRect(0, 0, getWidth(), getWidth());
 		
@@ -43,17 +50,17 @@ public class DisplayArea extends JComponent
 			width = (int)Math.floor( this.getWidth()/cellSize);
 		}*/
 		
-		for (int i=0;i<=width;i++){
-			g.drawLine(i*cellSize, 0, i*cellSize, height*cellSize);
+		for (int i=0;i<=width-x;i++){
+			g.drawLine(i*cellSize, 0, i*cellSize, (height-y)*cellSize);
 		}
-		for (int i=0;i<=height;i++){
-			g.drawLine(0, i*cellSize, width*cellSize, i*cellSize);
+		for (int i=0;i<=height-y;i++){
+			g.drawLine(0, i*cellSize, (width-x)*cellSize, i*cellSize);
 		}
 		
-		for (int i=0;i<height;i++){
-			for (int j=0;j<width;j++){
+		for (int i=y;i<height;i++){
+			for (int j=x;j<width;j++){
 				if (engine.getArea()[i][j]){
-					painLiveCell(i, j, g);
+					painLiveCell(i-y, j-x, g);
 				}
 					
 			}
@@ -61,8 +68,7 @@ public class DisplayArea extends JComponent
 	}
 	
 	public void painLiveCell(int x, int y,Graphics g){
-		g.fillRect((int)(x*cellSize+2),(int) (y*cellSize+2),
-				(int) (cellSize-3), (int)(cellSize-3));
+		g.fillRect((int) (y*cellSize+2),(int)(x*cellSize+2), (int)(cellSize-3), (int) (cellSize-3));
 	}
 
 
@@ -74,24 +80,31 @@ public class DisplayArea extends JComponent
 
 		if (e.getKeyChar() == ' '){
 			engine.nextGen();
-			paintComponent(getGraphics());
+			repaint();
 		}
 		if (e.getKeyChar() == 'w'){
-			engine.setY(engine.getY()+1);
-			paintComponent(getGraphics());
+			if (y<engine.getHeight()){
+				y++;
+			}
+			repaint();
 		} 
 		if (e.getKeyChar() == 's'){
-
-			engine.setY(engine.getY()-1);
-			paintComponent(getGraphics());
-		} 
-		if (e.getKeyChar() == 'd'){
-			engine.setX(engine.getX()+1);
-			paintComponent(getGraphics());
+			if (y>0){
+				y--;
+			}
+			repaint();
 		} 
 		if (e.getKeyChar() == 'a'){
-			engine.setX(engine.getX()-1);
-			paintComponent(getGraphics());
+			if (x<engine.getWidth()){
+				x++;
+			}
+			repaint();
+		} 
+		if (e.getKeyChar() == 'd'){
+			if (x>0){
+				x--;
+			}
+			repaint();
 		} 
 	}
 

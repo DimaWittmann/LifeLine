@@ -1,16 +1,17 @@
-import java.awt.Dimension;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.logging.Level;
 import javax.swing.JFrame;
 
 
 public class LifeLine extends JFrame{
-	
-	
+	GraphicsDevice device;
+	public LifeLine(){
+		super("The Game Of Life -_-");
+		 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		 device = env.getDefaultScreenDevice();
+		 
+	}
 	
 	
 	public static void main (String [] arg) throws IOException{
@@ -25,6 +26,8 @@ public class LifeLine extends JFrame{
 		game.pack();
 		game.setVisible(true);
 		game.addKeyListener(disp);
-
+		game.device.setFullScreenWindow(game.getOwner());
+		
+		
 	}
 }

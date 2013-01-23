@@ -10,6 +10,8 @@ public class Life {
 	protected int x;
 	protected int y;
 	
+	protected int survived;
+	
 	public boolean[][] getArea() {
 		return area;
 	}
@@ -60,6 +62,7 @@ public class Life {
 		this.width = width;
 		x = 0;
 		y = 0;
+		survived=0;
 		initArea();
 	}
 	
@@ -68,6 +71,9 @@ public class Life {
 		for(int i=1; i<=height; i++){
 			for(int j=1; j<=width; j++){
 				area[i][j] = r.nextBoolean();
+				if (area[i][j]){
+					survived++;
+				}
 			}
 		}
 
@@ -90,24 +96,24 @@ public class Life {
 		int tmpY = 0;
 		
 		for(boolean cell: area[1]){
-			if (!lflag){
-				lflag = lflag || cell;
+			if (!hflag){
+				hflag = hflag || cell;
 			}else{
 				break;
 			}
 		}
-		for(boolean cell: area[width]){ 
-			if(!rflag){
-				rflag = rflag || cell; 
+		for(boolean cell: area[area.length-2]){ 
+			if(!bflag){
+				bflag = bflag || cell; 
 			}else{
 				break;
 			}
 		}
-		for(int i=0; i<=width && !hflag; i++){
-			hflag = hflag || area[i][1];
+		for(int i=0; i<=area.length-2 && !lflag; i++){
+			lflag = lflag || area[i][1];
 		}
-		for(int i=0; i<=width && !bflag; i++){
-			bflag = bflag || area[i][height];
+		for(int i=0; i<=area.length-2 && !rflag; i++){
+			rflag = rflag || area[i][area[i].length-2];
 		}
 
 		if (lflag){
@@ -129,7 +135,7 @@ public class Life {
 		
 		for(int i = 1; i<=height; i++){
 			for(int j = 1; j<=width; j++){
-				tmpArea[i+tmpX][j+tmpY]=area[i][j];
+				tmpArea[i+tmpY][j+tmpX]=area[i][j];
 			}
 		}
 		
@@ -167,20 +173,21 @@ public class Life {
 				}
 			}
 		}
-		
-
 		area = tmpArea;
 	}
+	
 	
 	protected void engender(boolean[][] tmpArea, int x, int y){
 		if(!tmpArea[x][y]){
 			tmpArea[x][y] = true;
+			survived++;
 		}
 	}
 	
 	protected void kill(boolean[][] tmpArea, int x, int y){
 		if(tmpArea[x][y]){
 			tmpArea[x][y] = false;
+			survived--;
 		}
 	}
 	
