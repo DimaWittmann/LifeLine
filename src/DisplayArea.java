@@ -14,8 +14,7 @@ import javax.swing.JComponent;
 
 
 
-public class DisplayArea extends JComponent 
-						implements KeyListener{
+public class DisplayArea extends JComponent{
 
 	protected Life engine;
 	protected int cellSize;
@@ -28,7 +27,7 @@ public class DisplayArea extends JComponent
 		
 		this.engine = engine;
 		this.setBorder(BorderFactory.createRaisedBevelBorder());
-		this.setPreferredSize(new Dimension(300,300));
+		this.setPreferredSize(new Dimension(1240,720));
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		
 		cellSize =20;
@@ -83,65 +82,5 @@ public class DisplayArea extends JComponent
 
 
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-		if (e.getKeyChar() == ' '){
-			engine.nextGen();
-			repaint();
-		}
-		if (e.getKeyChar() == 'w'){
-			if (y<engine.getHeight()){
-				y++;
-			}
-			repaint();
-		} 
-		if (e.getKeyChar() == 's'){
-			if (y>0){
-				y--;
-			}
-			repaint();
-		} 
-		if (e.getKeyChar() == 'a'){
-			if (x<engine.getWidth()){
-				x++;
-			}
-			repaint();
-		} 
-		if (e.getKeyChar() == 'd'){
-			if (x>0){
-				x--;
-			}
-			repaint();
-		} 
-		if ((int)e.getKeyChar() == 27){ //esc
-			System.exit(0);
-		} 
-		if ((int)e.getKeyChar() == 10){ //Enter
-			x=0;
-			y=0;
-			engine.initArea();
-			repaint();
-		} 
-		if ((int)e.getKeyChar() == 45){ //-
-			if(cellSize>3){
-				cellSize--;
-				repaint();
-			}
-		}
-		if ((int)e.getKeyChar() == 43){ //-
-				cellSize++;
-				repaint();
-		}
-		//System.out.println((int)e.getKeyChar());
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {}
-
+	
 }
