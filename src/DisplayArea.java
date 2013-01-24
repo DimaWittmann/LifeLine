@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
@@ -21,6 +22,7 @@ public class DisplayArea extends JComponent
 	
 	protected int x=0;
 	protected int y=0;
+	public boolean run;
 	
 	public DisplayArea(Life engine){
 		
@@ -32,6 +34,7 @@ public class DisplayArea extends JComponent
 		cellSize =20;
 		this.setDoubleBuffered(true);
 
+		run = false;
 	}
 	
 	
@@ -50,11 +53,13 @@ public class DisplayArea extends JComponent
 			width = (int)Math.floor( this.getWidth()/cellSize);
 		}*/
 		
-		for (int i=0;i<=width-x;i++){
-			g.drawLine(i*cellSize, 0, i*cellSize, (height-y)*cellSize);
-		}
-		for (int i=0;i<=height-y;i++){
-			g.drawLine(0, i*cellSize, (width-x)*cellSize, i*cellSize);
+		if (cellSize>5){
+			for (int i=0;i<=width-x;i++){
+				g.drawLine(i*cellSize, 0, i*cellSize, (height-y)*cellSize);
+			}
+			for (int i=0;i<=height-y;i++){
+				g.drawLine(0, i*cellSize, (width-x)*cellSize, i*cellSize);
+			}
 		}
 		
 		for (int i=y;i<height;i++){
@@ -65,10 +70,13 @@ public class DisplayArea extends JComponent
 					
 			}
 		}
+		
+
 	}
 	
 	public void painLiveCell(int x, int y,Graphics g){
-		g.fillRect((int) (y*cellSize+2),(int)(x*cellSize+2), (int)(cellSize-3), (int) (cellSize-3));
+		g.fillRect((int) (y*cellSize+cellSize*0.1),(int)(x*cellSize+cellSize*0.1), 
+				(int)(cellSize-cellSize*0.15), (int) (cellSize-cellSize*0.15));
 	}
 
 
@@ -106,6 +114,27 @@ public class DisplayArea extends JComponent
 			}
 			repaint();
 		} 
+		if ((int)e.getKeyChar() == 27){ //esc
+			System.exit(0);
+		} 
+		if ((int)e.getKeyChar() == 10){ //Enter
+			x=0;
+			y=0;
+			engine.initArea();
+			repaint();
+		} 
+		if ((int)e.getKeyChar() == 45){ //-
+			if(cellSize>3){
+				cellSize--;
+				repaint();
+			}
+		}
+		if ((int)e.getKeyChar() == 43){ //-
+				cellSize++;
+				repaint();
+		}
+		//System.out.println((int)e.getKeyChar());
+		
 	}
 
 	@Override

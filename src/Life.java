@@ -6,6 +6,8 @@ public class Life {
 	protected boolean[][] area;
 	protected int height;
 	protected int width;
+	protected int startHeight;
+	protected int startWidth;
 	
 	protected int x;
 	protected int y;
@@ -57,17 +59,21 @@ public class Life {
 	}
 
 	public Life(int height, int width){
-		area = new boolean [height+2][width+2];
-		this.height = height;
-		this.width = width;
-		x = 0;
-		y = 0;
-		survived=0;
+		
+		startHeight = height;
+		startWidth = width;
 		initArea();
 	}
 	
 	public void initArea(){
+		
 		Random r = new Random();
+		height = startHeight;
+		width = startWidth;
+		x = 0;
+		y = 0;
+		survived=0;
+		area = new boolean [height+2][width+2];
 		for(int i=1; i<=height; i++){
 			for(int j=1; j<=width; j++){
 				area[i][j] = r.nextBoolean();
